@@ -359,13 +359,24 @@ async def main() -> None:
     logger.info("Polling started")
     try:
         await dp.start_polling(bot)
+    except (KeyboardInterrupt, asyncio.CancelledError):
+        logger.info("Polling interrupted by user")
     finally:
         logger.info("Polling stopped")
 
 
 def run() -> None:
     """Синхронный entry point для консольной команды `gifwsound`."""
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        # Ctrl+C во время поллинга: asyncio.run пробрасывает KeyboardInterrupt
+        # после отмены внутренних задач. main() уже отработал свой finally.
+        logger.info("Interrupted by user, exiting")
+        sys.exit(0)
+    except asyncio.CancelledError:
+        logger.info("Cancelled, exiting")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
