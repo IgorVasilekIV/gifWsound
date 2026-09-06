@@ -1,0 +1,14 @@
+.venv
+__pycache__
+*.py[cod]
+.git
+.gitignore
+.env
+.env.*
+logs
+*.log
+Dockerfile
+docker-compose.yml
+docker-entrypoint.sh
+.dockerignore
+.git/

@@ -1,0 +1,36 @@
+# docker-compose для интермева (2 ядра, ~3.5GB RAM).
+# Запуск:  docker compose up -d --build
+# Логи:     docker compose logs -f
+# Переменные читаются из .env в этой же папке (BOT_TOKEN обязателен).
+
+services:
+  bot:
+    build: .
+    image: gifwsound-bot:local
+    container_name: gifwsound-bot
+    restart: unless-stopped
+    init: true
+    read_only: true
+    security_opt:
+      - "no-new-privileges:true"
+    cap_drop:
+      - ALL
+    user: "1000:1000"
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN:?Set BOT_TOKEN in .env}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      TMPDIR: /tmp
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+      - /run:size=8m,mode=0755
+    volumes:
+      - ./logs:/app/logs
+    mem_limit: 512m
+    mem_reservation: 256m
+    cpus: "1.5"
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
