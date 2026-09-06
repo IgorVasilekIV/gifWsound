@@ -28,7 +28,7 @@ RUN mkdir -p /app/logs
 USER 1000:1000
 
 HEALTHCHECK --interval=60s --timeout=10s --start-period=20s --retries=3 \
-    CMD python -c "import os, urllib.request; \
+    CMD .venv/bin/python -c "import os, urllib.request; \
 urllib.request.urlopen('https://api.telegram.org/bot'+os.environ['BOT_TOKEN']+'/getMe', timeout=5)"
 
 ENTRYPOINT ["./docker-entrypoint.sh"]

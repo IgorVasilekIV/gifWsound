@@ -1,15 +1,15 @@
 #!/bin/sh
-# Точка входа: прогон sweep, затем exec uv run с переданной командой.
+# Точка входа: sweep временных файлов, затем запуск .venv/bin/gifwsound.
+# Минуем `uv run` — он под read_only пытается пересобрать пакет и фейлит.
 set -eu
 
 # Sweep осиротевших временных файлов (>24ч).
-uv run python -c "
+.venv/bin/python -c "
 from pathlib import Path
-import time
 from gifwsound.main import _sweep_stale, STALE_AGE_S
 base = Path('/tmp/gifwsound')
 base.mkdir(exist_ok=True)
 _sweep_stale(base, STALE_AGE_S)
 "
 
-exec uv run "$@"
+exec .venv/bin/gifwsound "$@"
