@@ -9,6 +9,5 @@ logs
 *.log
 Dockerfile
 docker-compose.yml
-docker-entrypoint.sh
 .dockerignore
 .git/
