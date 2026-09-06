@@ -20,6 +20,9 @@ services:
       BOT_TOKEN: ${BOT_TOKEN:?Set BOT_TOKEN in .env}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       TMPDIR: /tmp
+      HOME: /tmp
+      UV_CACHE_DIR: /tmp/uv-cache
+      XDG_CACHE_HOME: /tmp/.cache
     tmpfs:
       - /tmp:size=256m,mode=1777
       - /run:size=8m,mode=0755
